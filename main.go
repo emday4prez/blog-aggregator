@@ -1,12 +1,19 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/emday4prez/blog-aggregator/internal/database"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
+
+type apiConfig struct{
+	DB *database.Queries
+}
 
 func errorHandler(w http.ResponseWriter, r *http.Request){
 	respondWithError(w, 500, "Internal Server Error")
@@ -24,6 +31,10 @@ func main(){
 		log.Fatal("Error loading .env file")
 	}
 	port := os.Getenv("PORT")
+	dbURL := os.Getenv("CONN")
+
+	db, err := sql.Open("postgres", dbURL)
+	dbQueries := database.New(db)
  mux := http.NewServeMux()
 	mux.HandleFunc("GET /v1/err", errorHandler )
 	mux.HandleFunc("GET /v1/healthz", healthzHandler )
