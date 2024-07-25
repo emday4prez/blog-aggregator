@@ -24,6 +24,10 @@ func healthzHandler(w http.ResponseWriter, r *http.Request){
 	respondWithJSON(w, 200, response)
 }
 
+func usersPostHandler(w http.ResponseWriter, r *http.Request){
+
+}
+
 func main(){
 		const filepathRoot = "."
 	err := godotenv.Load(".env")	
@@ -35,9 +39,12 @@ func main(){
 
 	db, err := sql.Open("postgres", dbURL)
 	dbQueries := database.New(db)
+
+
  mux := http.NewServeMux()
 	mux.HandleFunc("GET /v1/err", errorHandler )
 	mux.HandleFunc("GET /v1/healthz", healthzHandler )
+	mux.HandleFunc("POST /v1/users", usersPostHandler)
 
 		srv := &http.Server{
 		Addr:    ":" + port,
