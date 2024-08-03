@@ -35,16 +35,26 @@ func main(){
 		log.Fatal("Error loading .env file")
 	}
 	port := os.Getenv("PORT")
-	dbURL := os.Getenv("CONN")
+	if port == "" {
+		log.Fatal("PORT environment variable is not set")
+	}
 
+	dbURL := os.Getenv("CONN")
+if dbURL == "" {
+		log.Fatal("DATABASE_URL environment variable is not set")
+	}
 	db, err := sql.Open("postgres", dbURL)
 	dbQueries := database.New(db)
 
 
+apiCfg := apiConfig{
+	DB: dbQueries,
+}
+
  mux := http.NewServeMux()
 	mux.HandleFunc("GET /v1/err", errorHandler )
 	mux.HandleFunc("GET /v1/healthz", healthzHandler )
-	mux.HandleFunc("POST /v1/users", usersPostHandler)
+	mux.HandleFunc("POST /v1/users", apiCfg.handlerUsersCreate)
 
 		srv := &http.Server{
 		Addr:    ":" + port,
