@@ -24,9 +24,6 @@ func healthzHandler(w http.ResponseWriter, r *http.Request){
 	respondWithJSON(w, 200, response)
 }
 
-func usersPostHandler(w http.ResponseWriter, r *http.Request){
-
-}
 
 func main(){
 		const filepathRoot = "."
