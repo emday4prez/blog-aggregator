@@ -43,7 +43,6 @@ if dbURL == "" {
 	db, err := sql.Open("postgres", dbURL)
 	dbQueries := database.New(db)
 
-
 apiCfg := apiConfig{
 	DB: dbQueries,
 }
