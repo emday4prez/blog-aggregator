@@ -51,7 +51,7 @@ apiCfg := apiConfig{
 	mux.HandleFunc("GET /v1/err", errorHandler )
 	mux.HandleFunc("GET /v1/healthz", healthzHandler )
 	mux.HandleFunc("POST /v1/users", apiCfg.handlerUsersCreate)
-
+mux.HandleFunc("GET /v1/users", apiCfg.handlerGetUserByApiKey)
 		srv := &http.Server{
 		Addr:    ":" + port,
 		Handler: mux,
