@@ -1,32 +1,23 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
-	"strings"
+
+	"github.com/emday4prez/blog-aggregator/internal/auth"
 )
 
-func (cfg *apiConfig) handlerGetUserByApiKey(w http.ResponseWriter, r *http.Request) {
-    // Extract the Authorization header
-    authHeader := r.Header.Get("Authorization")
-    
-    const prefix = "ApiKey "
-    if !strings.HasPrefix(authHeader, prefix) {
-        respondWithError(w, http.StatusUnauthorized, "Invalid Authorization Header")
-        return
-    }
+func (cfg *apiConfig) handlerUsersGet(w http.ResponseWriter, r *http.Request) {
+	apiKey, err := auth.GetAPIKey(r.Header)
+	if err != nil {
+		respondWithError(w, http.StatusUnauthorized, "Couldn't find api key")
+		return
+	}
 
-    // Remove the "ApiKey " prefix to get the actual API key
-    apiKey := strings.TrimPrefix(authHeader, prefix)
+	user, err := cfg.DB.GetUserByApiKey(r.Context(), apiKey) 
+	if err != nil {
+		respondWithError(w, http.StatusNotFound, "Couldn't get user")
+		return
+	}
 
-    // Fetch the user by API key
-    user, err := cfg.DB.GetUserByApiKey(r.Context(), apiKey)
-    if err != nil {
-        fmt.Printf("Couldn't find user: %v\n", err.Error())
-        respondWithError(w, http.StatusInternalServerError, "Couldn't find user")
-        return
-    }
-
-    // Respond with user data in JSON format
-    respondWithJSON(w, http.StatusOK, databaseUserToUser(user))
+	respondWithJSON(w, http.StatusOK, databaseUserToUser(user))
 }
