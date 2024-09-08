@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/emday4prez/blog-aggregator/internal/auth"
@@ -9,7 +10,7 @@ import (
 func (cfg *apiConfig) handlerUsersGet(w http.ResponseWriter, r *http.Request) {
 	apiKey, err := auth.GetAPIKey(r.Header)
 	if err != nil {
-		respondWithError(w, http.StatusUnauthorized, "Couldn't find api key")
+		respondWithError(w, http.StatusUnauthorized, fmt.Sprintf("Could not get by user api key: %s", err) )
 		return
 	}
 
