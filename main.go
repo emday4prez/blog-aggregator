@@ -15,8 +15,6 @@ type apiConfig struct{
 	DB *database.Queries
 }
 
-type authedHandler func(http.ResponseWriter, *http.Request, database.User)
-
 func errorHandler(w http.ResponseWriter, r *http.Request){
 	respondWithError(w, 500, "Internal Server Error")
 }
@@ -24,10 +22,6 @@ func errorHandler(w http.ResponseWriter, r *http.Request){
 func healthzHandler(w http.ResponseWriter, r *http.Request){
 	 response := map[string]string{"status": "ok"}
 	respondWithJSON(w, 200, response)
-}
-
-func (cfg *apiConfig) middlewareAuth(handler authedHandler) http.HandlerFunc {
-   
 }
 
 func main(){
