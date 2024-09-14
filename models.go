@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/emday4prez/blog-aggregator/internal/database"
@@ -21,6 +22,26 @@ func databaseUserToUser(user database.User) User {
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
 		Name:      user.Name,
-		ApiKey: 		user.ApiKey,
+		ApiKey:    user.ApiKey,
+	}
+}
+
+type Feed struct {
+	ID        uuid.UUID
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Name      sql.NullString
+	Url       sql.NullString
+	UserID    uuid.NullUUID
+}
+
+func databaseFeedToFeed(feed database.Feed) Feed {
+	return Feed{
+		ID:        feed.ID,
+		CreatedAt: feed.CreatedAt,
+		UpdatedAt: feed.UpdatedAt,
+		Name:      feed.Name,
+		Url:       feed.Url,
+		UserID:    feed.UserID,
 	}
 }
