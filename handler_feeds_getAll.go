@@ -8,11 +8,13 @@ import (
 func (cfg *apiConfig) handlerGetAllFeeds(w http.ResponseWriter, r *http.Request) {
 
 	feeds, err := cfg.DB.GetAllFeeds(r.Context())
+
 	if err != nil {
 		fmt.Printf("Couldn't get feeds: %v\n", err.Error())
 		respondWithError(w, http.StatusInternalServerError, "Couldn't fetch feeds")
 		return
 	}
+
 	var feedsSlice []Feed
 	for _, v := range feeds {
 		feedsSlice = append(feedsSlice, databaseFeedToFeed(v))
