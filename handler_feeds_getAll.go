@@ -11,7 +11,7 @@ func (cfg *apiConfig) handlerGetAllFeeds(w http.ResponseWriter, r *http.Request)
 
 	if err != nil {
 		fmt.Printf("Couldn't get feeds: %v\n", err.Error())
-		respondWithError(w, http.StatusInternalServerError, "Couldn't fetch feeds")
+		respondWithError(w, http.StatusInternalServerError, "Error Getting All Feeds")
 		return
 	}
 
