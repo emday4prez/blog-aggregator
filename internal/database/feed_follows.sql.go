@@ -14,7 +14,7 @@ import (
 
 const createFeedFollow = `-- name: CreateFeedFollow :one
 INSERT INTO feed_follows (id,created_at,updated_at,user_id ,feed_id)
-VALUES ($1, $2, $3, $4, encode(sha256(random()::text::bytea), 'hex'))
+VALUES ($1, $2, $3, $4, $5)
 RETURNING id, created_at, updated_at, user_id, feed_id
 `
 
@@ -23,6 +23,7 @@ type CreateFeedFollowParams struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	UserID    uuid.NullUUID
+	FeedID    uuid.NullUUID
 }
 
 type CreateFeedFollowRow struct {
@@ -39,6 +40,7 @@ func (q *Queries) CreateFeedFollow(ctx context.Context, arg CreateFeedFollowPara
 		arg.CreatedAt,
 		arg.UpdatedAt,
 		arg.UserID,
+		arg.FeedID,
 	)
 	var i CreateFeedFollowRow
 	err := row.Scan(
