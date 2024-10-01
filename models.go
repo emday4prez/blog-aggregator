@@ -49,7 +49,7 @@ func databaseFeedToFeed(feed database.Feed) Feed {
 type FeedFollow struct {
 	ID        uuid.UUID
 	CreatedAt time.Time
-	UpdatedAt time.Time
-	FeedID    uuid.NullUUID
+	UpdatedAt time.Time	
 	UserID    uuid.NullUUID
+	FeedID    uuid.NullUUID
 }
